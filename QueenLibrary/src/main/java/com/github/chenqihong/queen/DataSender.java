@@ -1,12 +1,16 @@
 package com.github.chenqihong.queen;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
 import com.github.chenqihong.queen.Device.Device;
 import com.github.chenqihong.queen.DeviceInfoCollector.TrafficUtil;
+import com.github.chenqihong.queen.Geolocation.GeoLocationListener;
+import com.github.chenqihong.queen.Geolocation.ILocation;
+import com.github.chenqihong.queen.Geolocation.LocationFactory;
 import com.github.chenqihong.queen.HttpUtil.HttpUtils;
 
 import org.json.JSONArray;
@@ -32,7 +36,7 @@ public class DataSender {
     /**
      * 定位组件
      */
-    private Geolocation mGeolocation = null;
+    private ILocation mGeolocation = null;
 
     /**
      * 环境变量封装HashMap
@@ -239,18 +243,14 @@ public class DataSender {
      */
     public void putLocationInfo() {
         if (null == mGeolocation) {
-            LocationOption option = LocationOption.getDefault()
-                    .setCacheTimeMs(10*60*1000)
-                    .setIsNeedAddress(false)
-                    .setScanSpanMs(0)
-                    .setUsingGps(true);
-            mGeolocation = new Geolocation(option);
+            mGeolocation = LocationFactory.creator(LocationFactory.TYPE_GOOGLE_GEO, mContext);
         }
 
-        mGeolocation.getLocationOnce(true, new LocationListener() {
+        mGeolocation.getLocationOnce(new GeoLocationListener() {
             @Override
-            public void OnReceiveLocation(Location location) {
-                if (location.isSuccess()) {
+            public void onReceivedLocation(Object locationData) {
+                Location location = (Location) locationData;
+                if (null != location) {
                     mParams.put("lx", location.getLatitude());
                     mParams.put("ly", location.getLongitude());
                 }

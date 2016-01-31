@@ -74,7 +74,7 @@ public class Device {
     }
 
     public String getPhoneNo(){
-        return DeviceUtils.getPhoneNo(mContext)
+        return DeviceUtils.getPhoneNo(mContext);
     }
 
     public String getAppName(){
@@ -95,5 +95,13 @@ public class Device {
 
     public String getOsVersion(){
         return DeviceUtils.getOsVersion();
+    }
+
+    public String getPhoneModel(){
+        return null;
+    }
+
+    public String getOsType(){
+        return null;
     }
 }
