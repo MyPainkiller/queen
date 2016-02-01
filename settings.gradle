@@ -1,1 +1,1 @@
-include ':QueenLibrary'
+include ':QueenLibrary', ':QueenExample'

@@ -21,3 +21,28 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+subprojects{
+    configure(allprojects - project(':QueenExample')) {
+        apply plugin: 'com.android.library'
+        android {
+            compileSdkVersion 22
+            buildToolsVersion '23.0.2'
+
+            defaultConfig {
+                minSdkVersion 14
+                targetSdkVersion 22
+                versionCode 1
+                versionName "1.0"
+            }
+            lintOptions {
+                abortOnError false
+            }
+        }
+        dependencies {
+            testCompile 'junit:junit:4.12'
+            compile 'com.android.support:appcompat-v7:22.2.1'
+        }
+        //apply from: '../gradle/maven_push.gradle'
+    }
+}
