@@ -1,8 +1,7 @@
 package com.github.chenqihong.queen.ActivityInfoCollector;
 
 import android.content.Context;
-
-import com.mucfc.muna.logger.MuLog;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -10,7 +9,7 @@ import org.json.JSONObject;
  * activity页面行为收集
  */
 public class PageCollector {
-	private static final String TAG = "com.mucfc.muna.beacon.ActivityInfoCollector.PageCollector";
+	private static final String TAG = "PageCollector";
 	private String mPageName;
 	private String mTitle;
 	private String mTag;
@@ -61,7 +60,7 @@ public class PageCollector {
 			}
 
 		}catch(Exception e){
-			MuLog.error(TAG, "pageOpenInfoGenerated: unknown error" );
+			Log.e(TAG, "pageOpenInfoGenerated: unknown error");
 		}
 		return object;
 	}

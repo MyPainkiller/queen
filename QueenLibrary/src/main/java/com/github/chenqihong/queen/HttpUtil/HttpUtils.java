@@ -27,15 +27,7 @@ import static com.squareup.okhttp.MediaType.parse;
 
 public class HttpUtils {
 
-	private static String TAG = "com.mucfc.muna.beacon.HttpUtils";
-	/**
-	 * RSA的Public key
-	 */
-	private static String sPublicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDaoyy+03nCctxjp8kcWeZplB2" +
-			"qSPhFAUYaI3zH7427ha4qurl2oCVOroHLwPlvg6mxNnri0ub2F5YmSuz87Kws2xncDF1y4" +
-			"Mz11c9hdGpl8r2UMbc7KeGE6nT9UGrdK5hc1SIgSne6WJqB9mD4o0fYGURCru0TXQhRbeSe0q" +
-			"liDwIDAQAB";
-
+	private static String TAG = "HttpUtils";
 	/**
 	 * post
 	 * @param url 后台地址

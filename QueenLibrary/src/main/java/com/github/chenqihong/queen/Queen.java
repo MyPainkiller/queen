@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.github.chenqihong.queen.ActivityInfoCollector.BackgroundMonitor;
 import com.github.chenqihong.queen.ActivityInfoCollector.PageCollector;
+import com.github.chenqihong.queen.Base.RSAUtils;
 import com.github.chenqihong.queen.CrashCollector.CrashHandler;
 
 import org.json.JSONArray;
@@ -80,6 +81,10 @@ public class Queen {
 	 */
 	private boolean isCrashHandlerStarted = false;
 
+	private boolean isEncryptedOptionSet = false;
+
+	private boolean isUrlOptionSet = false;
+
 	/**
 	 * Beacon必须为单例，一个应用只存在一个实例。
 	 * @return Beacon实例
@@ -101,6 +106,14 @@ public class Queen {
 		setDomain(sessionDomain);
 		initUncaughtErrorMonitor(application);
 		mSender = new DataSender(application);
+	}
+
+	public void setUrl(String url){
+		mSender.setUrl(url);
+	}
+
+	public void setRSAPublicKey(String publicKey){
+		RSAUtils.setPublicKey(publicKey);
 	}
 
 	/**

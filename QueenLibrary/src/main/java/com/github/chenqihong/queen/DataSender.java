@@ -1,7 +1,6 @@
 package com.github.chenqihong.queen;
 
 import android.app.Application;
-import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +30,7 @@ public class DataSender {
     /**
      * 后台Url
      */
-    private static final String URL = "";
+    private static String sUrl = "";
 
     /**
      * 定位组件
@@ -96,6 +95,10 @@ public class DataSender {
         if (null != mSessionId) {
             mParams.put("td", mSessionId + "");
         }
+    }
+
+    public void setUrl(String url){
+        sUrl = url;
     }
 
     /**
@@ -294,7 +297,7 @@ public class DataSender {
             try {
                 Message message = mHandler.obtainMessage();
                 String data = null;
-                data = HttpUtils.sendPost(URL, mParams, mActionArray);
+                data = HttpUtils.sendPost(sUrl, mParams, mActionArray);
                 if (null != data) {
                     message.what = 1;
                     Bundle bundle = new Bundle();
