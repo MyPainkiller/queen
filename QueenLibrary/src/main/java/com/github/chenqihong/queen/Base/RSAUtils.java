@@ -59,26 +59,6 @@ public class RSAUtils {
 		sPublicKey = publicKey;
 	}
 	
-	public static byte[] decodeData(byte[] encoded) throws Exception{
-		String privateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJc" +
-				"AgEAAoGBANqjLL7TecJy3GOnyRxZ5mmUHapI+EUBRhojfMfvjbuFriq" +
-				"6uXagJU6ugcvA+W+DqbE2euLS5vYXliZK7PzsrCzbGdwMXXLgzPXVz2F" +
-				"0amXyvZQxtzsp4YTqdP1Qat0rmFzVIiBKd7pYmoH2YPijR9gZREKu7RNdC" +
-				"FFt5J7SqWIPAgMBAAECgYB0+FOaDB3aMAVEs6Fer6Ib3gg48C0TDelpVo8Nk" +
-				"FXte0mAxsEue+M5wxbh4W4RgQkqLBF2hIrYIipMdk1vy1cY8oVDBv7KseB97XD" +
-				"XFk0FjO+amySfWsm8qoen//A9W20rN0M1rcSDOyYVmTSU++MdKdvhb6Z3NGEROv5" +
-				"d2mUn8QJBAP9av5yy6v85+1d9g2yCeF5pv8cCfvLHFd8togQAeTJTapNTy2BRm5pPi" +
-				"i++F4wkTy8GAJIUeiZgpobN6sLFgJUCQQDbMKo9vaXig7/R/Ni1COqov4rqfDvVI+30RvG" +
-				"i5Bv0ouy0ct47OMKs/l8JbX2KUwAjlJR5sNf7/nCQf2JLxLsTAkB4onWdYMU2GD1OYuRgse6No+" +
-				"XO7bXtmfISQmuk+lhHVzMlMNQGx+b76pG85lAXi9vAulQwru3aDZT+YG+E3mtVAkAVd+/EulWMG" +
-				"SFpnN1Q5f2t54zgqKhnmOxOl8BFFxiR3n9WsUWJAWc38HY4gyvfp3+E/KGKRcLx4Jr/3Coxh6RXAk" +
-				"EAmLauxCIGfK0UpiNA1lodPx7sCthwrKJrmXJKM8jTQjCb/yTdLSd1DkV4PfUMk2QPGsAdZSYsqJK0o" +
-				"ltplUzNAA==";
-		
-		byte[] decodeData = decryptByPrivateKey(encoded, privateKey);
-		return decodeData;
-	}
-	
 	public static byte[] encryptByPublicKey(byte[] data, String publicKey)
 			throws Exception {
 		//Log.i("MyApplication", "src data="+new String(data,"UTF-8"));
