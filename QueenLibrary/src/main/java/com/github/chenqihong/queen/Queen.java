@@ -1,6 +1,7 @@
 package com.github.chenqihong.queen;
 
 import android.annotation.TargetApi;
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
@@ -93,13 +94,13 @@ public class Queen {
 	/**
 	 * Beacon初始化
 	 * @param sessionDomain cookie的域名
-	 * @param context 布局内容
+	 * @param application 布局内容
 	 */
-	public void init(String sessionDomain, Context context){
-		backgroundDataCollect(context);
+	public void init(String sessionDomain, Application application){
+		backgroundDataCollect(application);
 		setDomain(sessionDomain);
-		initUncaughtErrorMonitor(context);
-		mSender = new DataSender(context);
+		initUncaughtErrorMonitor(application);
+		mSender = new DataSender(application);
 	}
 
 	/**

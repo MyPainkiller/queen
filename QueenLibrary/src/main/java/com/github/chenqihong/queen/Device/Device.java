@@ -1,5 +1,6 @@
 package com.github.chenqihong.queen.Device;
 
+import android.app.Application;
 import android.content.Context;
 
 /**
@@ -9,9 +10,9 @@ public class Device {
     private Context mContext;
     private static Device mInstance;
 
-    public static Device getInstance(Context context){
+    public static Device getInstance(Application application){
         if(null == mInstance) {
-            mInstance = new Device(context);
+            mInstance = new Device(application);
         }
 
         return mInstance;
@@ -19,6 +20,7 @@ public class Device {
 
     private Device(Context context){
         mContext = context;
+        DeviceUtils.registerBatteryReceiver(context);
     }
 
     public String getMacAddress(){
@@ -98,10 +100,14 @@ public class Device {
     }
 
     public String getPhoneModel(){
-        return null;
+        return DeviceUtils.getDeviceModel();
     }
 
     public String getOsType(){
-        return null;
+        return DeviceUtils.getPlatform();
+    }
+
+    public String getBatteryLevel(){
+        return DeviceUtils.getBatteryLevel() + "";
     }
 }

@@ -1,7 +1,10 @@
 package com.github.chenqihong.queen.Device;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.CellLocation;
@@ -31,6 +35,8 @@ public class DeviceUtils {
 
     private static final String SHAREDPREF_NAME = "device";
     private static final String SHAREDPREF_KEY = "deviceId";
+    private static int sBatteryLevel = 0;
+
     public static boolean checkPermission(Context context, String permName){
         return context.getPackageManager().checkPermission(permName, context.getPackageName())
                 == PackageManager.PERMISSION_GRANTED;
@@ -224,6 +230,10 @@ public class DeviceUtils {
         return Build.VERSION.RELEASE;
     }
 
+    public static int getBatteryLevel(){
+        return sBatteryLevel;
+    }
+
     /**
      * 获取包名
      */
@@ -308,6 +318,7 @@ public class DeviceUtils {
         return cellLocation.toString();
     }
 
+
     private static String generateDeviceId(){
         return UUID.randomUUID().toString().replace("-", "").toUpperCase();
     }
@@ -326,6 +337,25 @@ public class DeviceUtils {
                 context.getSharedPreferences(SHAREDPREF_NAME, Context.MODE_PRIVATE);
 
         return preferences.getString(SHAREDPREF_KEY, null);
+    }
+
+    /**
+     * 注册电池监听广播
+     */
+    public static void registerBatteryReceiver(Context context) {
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_BATTERY_CHANGED);
+
+        BroadcastReceiver batteryReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                sBatteryLevel = (int) (100f * intent
+                        .getIntExtra(BatteryManager.EXTRA_LEVEL, 0) / intent.getIntExtra
+                        (BatteryManager.EXTRA_SCALE, 100));
+            }
+        };
+        context.registerReceiver(batteryReceiver, filter);
     }
 
 

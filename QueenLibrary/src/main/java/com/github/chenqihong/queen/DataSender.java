@@ -1,5 +1,6 @@
 package com.github.chenqihong.queen;
 
+import android.app.Application;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
@@ -30,8 +31,7 @@ public class DataSender {
     /**
      * 后台Url
      */
-    //private static final String URL = "http://10.75.201.71:3088/beacon-web/ping/1.0.0";
-    private static final String URL = "https://p.mucfc.com/ping/0.0.1";
+    private static final String URL = "";
 
     /**
      * 定位组件
@@ -63,14 +63,14 @@ public class DataSender {
      */
     private String mUserId;
 
-    private Context mContext;
+    private Application mContext;
 
     /**
      * 初始化DataSender
      */
-    public DataSender(Context context) {
+    public DataSender(Application application) {
         mParams = new HashMap<String, Object>();
-        mContext = context;
+        mContext = application;
     }
 
     /**
