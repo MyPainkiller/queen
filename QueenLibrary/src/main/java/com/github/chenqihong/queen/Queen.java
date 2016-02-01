@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.github.chenqihong.queen.ActivityInfoCollector.BackgroundMonitor;
 import com.github.chenqihong.queen.ActivityInfoCollector.PageCollector;
 import com.github.chenqihong.queen.Base.RSAUtils;
 import com.github.chenqihong.queen.CrashCollector.CrashHandler;
+import com.github.chenqihong.queen.Exception.NoUrlException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -81,8 +83,6 @@ public class Queen {
 	 */
 	private boolean isCrashHandlerStarted = false;
 
-	private boolean isEncryptedOptionSet = false;
-
 	private boolean isUrlOptionSet = false;
 
 	/**
@@ -108,11 +108,20 @@ public class Queen {
 		mSender = new DataSender(application);
 	}
 
-	public void setUrl(String url){
+	public void setUrl(@NonNull String url){
+		if(null == url && "".equals(url)){
+			return;
+		}
+
 		mSender.setUrl(url);
+		isUrlOptionSet = true;
 	}
 
-	public void setRSAPublicKey(String publicKey){
+	public void setRSAPublicKey(@NonNull String publicKey){
+		if(null == publicKey && "".equals(publicKey)){
+			return;
+		}
+
 		RSAUtils.setPublicKey(publicKey);
 	}
 
@@ -122,10 +131,13 @@ public class Queen {
 	@TargetApi(Build.VERSION_CODES.KITKAT)
 	public void sendData(){
 		try{
-			mSender.sendData(mArray);
+			if(isUrlOptionSet) {
+				mSender.sendData(mArray);
+			}else{
+				throw new NoUrlException("No URL Expected");
+			}
 		}catch(Exception e){
-			Log.e(TAG, "sendData");
-			//Log.e(TAG, "Error: sendData", e);
+			Log.e(TAG, "sendData", e);
 		}
 	}
 

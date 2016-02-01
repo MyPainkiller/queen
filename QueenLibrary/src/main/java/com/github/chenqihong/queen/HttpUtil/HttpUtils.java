@@ -3,6 +3,7 @@ package com.github.chenqihong.queen.HttpUtil;
 import android.util.Log;
 
 import com.github.chenqihong.queen.Base.AESUtils;
+import com.github.chenqihong.queen.Base.RSAUtils;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -49,8 +50,13 @@ public class HttpUtils {
 		paramObj.put("ca", array);
 		try{
 			//Log.e("original", "original:" + paramObj.toString());
-			byte[] seed = java.util.UUID.randomUUID().toString().replace("-", "").substring(0, 16).getBytes();
-			byte[] finalEncodeData = AESUtils.encrypt(seed, gzip(paramObj.toString().getBytes()));
+			byte[] finalEncodeData = null;
+			if(RSAUtils.hasPublicKey()) {
+				byte[] seed = java.util.UUID.randomUUID().toString().replace("-", "").substring(0, 16).getBytes();
+				finalEncodeData = AESUtils.encrypt(seed, gzip(paramObj.toString().getBytes()));
+			}else {
+				finalEncodeData = gzip(paramObj.toString().getBytes());
+			}
 
 			OkHttpClient client = new OkHttpClient();
 			RequestBody body = RequestBody.create(parse("application/oct-stream"), finalEncodeData);

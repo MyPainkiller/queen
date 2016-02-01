@@ -58,6 +58,10 @@ public class RSAUtils {
 	public static void setPublicKey(String publicKey){
 		sPublicKey = publicKey;
 	}
+
+	public static boolean hasPublicKey(){
+		return sPublicKey != null ? true : false;
+	}
 	
 	public static byte[] encryptByPublicKey(byte[] data, String publicKey)
 			throws Exception {
