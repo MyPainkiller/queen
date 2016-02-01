@@ -1,6 +1,6 @@
 package com.github.chenqihong.queen.UiUtil;
 
-import com.mucfc.muna.logger.MuLog;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -8,7 +8,7 @@ import org.json.JSONObject;
  * ImageView动作封装
  */
 public class ImageViewUtil {
-	private static final String TAG = "com.mucfc.muna.beacon.UiUtil.ImageViewUtil";
+	private static final String TAG = "ImageViewUtil";
 	/**
 	 * ImageView动作封装
 	 * @param target 标识
@@ -51,7 +51,7 @@ public class ImageViewUtil {
 				object.put("pi", activityName);
 			}
 		}catch(Exception e){
-			MuLog.error(TAG, "imageViewInfoGenerated: unknown error");
+			Log.e(TAG, "imageViewInfoGenerated: unknown error");
 		}
 		return object;
 	}

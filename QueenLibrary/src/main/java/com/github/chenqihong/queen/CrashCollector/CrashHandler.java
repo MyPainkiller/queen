@@ -4,8 +4,7 @@ package com.github.chenqihong.queen.CrashCollector;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Process;
-
-import com.mucfc.muna.logger.MuLog;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +17,7 @@ import java.io.StringWriter;
  * Created by Chen Qihong on 15/10/20.
  */
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
-    private static final String TAG = "com.mucfc.muna.beacon.CrashCollector.CrashHandler";
+    private static final String TAG = "CrashHandler";
     private Thread.UncaughtExceptionHandler mDefaultCrashHandler;
     private OnUnCaughtExceptionListener mListener;
     private Context mContext;
@@ -79,9 +78,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
         		object.put("er", writer.toString());
         	} catch (JSONException e) {
-                MuLog.error(TAG, "CrashHandler: JSONException");
+                Log.e(TAG, "CrashHandler: JSONException");
             } catch (PackageManager.NameNotFoundException e) {
-                MuLog.error(TAG, "CrashHandler: PackageManager.NameNotFoundException");
+                Log.e(TAG, "CrashHandler: PackageManager.NameNotFoundException");
         	}
 
         	mListener.onException(object);
@@ -93,7 +92,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             }
 
         } catch (Exception e) {
-            MuLog.error(TAG, "CrashHandler: Unknow Error");
+            Log.e(TAG, "CrashHandler: Unknow Error");
         }
 
     }

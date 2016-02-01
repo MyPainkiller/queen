@@ -1,6 +1,6 @@
 package com.github.chenqihong.queen.UiUtil;
 
-import com.mucfc.muna.logger.MuLog;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -8,7 +8,7 @@ import org.json.JSONObject;
  * Button点击动作封装
  */
 public class ButtonUtil {
-	private static final String TAG = "com.mucfc.muna.beacon.UiUtil.ButtonUtil";
+	private static final String TAG = "ButtonUtil";
 	/**
 	 * button动作封装
 	 * @param target 标识
@@ -62,7 +62,7 @@ public class ButtonUtil {
 
 			object.put("ac", "BC");
 		}catch(Exception e){
-			MuLog.error(TAG,"ButtonUtil:unknown error");
+			Log.e(TAG, "ButtonUtil:unknown error");
 		}
 
 		return object;
