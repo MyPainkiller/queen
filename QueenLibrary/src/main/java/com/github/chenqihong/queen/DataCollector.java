@@ -123,67 +123,6 @@ public class DataCollector {
 	}
 
 	/**
-	 * Log收集
-	 * @param filepath MuLog路径
-	 * @param array 待插入的Json列表
-	 * @return 插好的Json列表
-	 */
-	public JSONArray muLogCollect(String filepath, JSONArray array){
-		if(null == filepath || array == null){
-			return null;
-		}
-
-		array = readMuLogFile(filepath, array);
-		return array;
-	}
-
-	/**
-	 * 读取MuLog的所有文件
-	 * @param filePath 文件路径
-	 * @param array 待插入JSON列表
-	 * @return 插好的Json列表
-	 */
-	private JSONArray readMuLogFile(String filePath, JSONArray array){
-		File archivePath  = new File(filePath);
-		String[] fileList = archivePath.list();
-		for(int i = 0; i<fileList.length; i++){
-			File file = new File(filePath + File.separator + fileList[i]);
-			if(file.isFile()){
-				array = readJSONObject(file, array);
-			}
-		}
-		return array;
-	}
-
-	/**
-	 * 读取文件中的所有内容
-	 * @param file 文件句柄
-	 * @param array 待插入JSON列表
-	 * @return 插好的Json列表
-	 */
-	private JSONArray readJSONObject(File file , JSONArray array){
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String tempString;
-			while ((tempString = reader.readLine()) != null) {
-				JSONObject object = new JSONObject(tempString);
-				array.put(object);
-			}
-			reader.close();
-			return array;
-		}catch (FileNotFoundException e){
-			Log.e(TAG, "readJSONObject:", e);
-			return array;
-		}catch (IOException e){
-			Log.e(TAG, "readJSONObject:", e);
-			return array;
-		}catch (JSONException e){
-			Log.e(TAG, "readJSONObject:", e);
-			return array;
-		}
-	}
-
-	/**
 	 * 前后台监控启动
 	 * @param context
 	 * @param listener 监听器
