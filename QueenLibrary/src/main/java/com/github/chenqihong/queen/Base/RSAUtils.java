@@ -47,25 +47,16 @@ public class RSAUtils {
 	 * RSA最大解密密文大小
 	 */
 	private static final int MAX_DECRYPT_BLOCK = 128;
+
+	private static String sPublicKey = null;
 	
 	public static byte[] encodeData(byte[] data) throws Exception{
-
-
-		String publicKey = null;
-		/*publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDZGZ/jEdDIL4Z1UpOcgBbRfUei"
-				+ "lk/JaSyjH2CBePsC8eWLIEOHxq4dmAVPE0Tty5xUDWxa1vmnwPEJFWaYDw3pbhlo"
-				+ "CYObUNCc78UUFHN+D70h+uyW1OzJRQF41OpvpQpZQSKM3oXgzzbLbARVxIvrc7WQ"
-				+ "xF65kRoC+XykgqZ5BwIDAQAB";*/
-		
-		publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDaoyy+03nCctxjp8kcWeZplB2" +
-				"qSPhFAUYaI3zH7427ha4qurl2oCVOroHLwPlvg6mxNnri0ub2F5YmSuz87Kws2xncDF1y4" +
-				"Mz11c9hdGpl8r2UMbc7KeGE6nT9UGrdK5hc1SIgSne6WJqB9mD4o0fYGURCru0TXQhRbeSe0q" +
-				"liDwIDAQAB";
-
-
-
-		byte[] encodeData = encryptByPublicKey(data,publicKey);		
+		byte[] encodeData = encryptByPublicKey(data,sPublicKey);
 		return encodeData;
+	}
+
+	public static void setPublicKey(String publicKey){
+		sPublicKey = publicKey;
 	}
 	
 	public static byte[] decodeData(byte[] encoded) throws Exception{
