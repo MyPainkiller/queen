@@ -13,7 +13,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="20dp"
-        android:text="Press button below to trig a user experience log"
+        android:text="多次点击按钮来获取用户数据\nPress button below for serveral times to trig a user experience log"
         android:textSize="@dimen/font_size16"
         />
 

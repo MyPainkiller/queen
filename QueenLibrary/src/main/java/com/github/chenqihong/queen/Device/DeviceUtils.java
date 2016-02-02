@@ -58,7 +58,7 @@ public class DeviceUtils {
         }
 
         macAddress = wifiInfo.getMacAddress();
-        return macAddress.toUpperCase();
+        return null == macAddress? null: macAddress.toUpperCase();
     }
 
     public static String getDeviceIMEI(Context context){
@@ -88,7 +88,7 @@ public class DeviceUtils {
         }
 
         imsi = telephonyManager.getSubscriberId();
-        return imsi.toUpperCase();
+        return null == imsi ? null : imsi.toUpperCase();
     }
 
     public static String getDeviceModel(){
@@ -264,7 +264,7 @@ public class DeviceUtils {
     public static String getAndroidId(Context context) {
 
         String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        return (androidId == null ? "" : androidId).toUpperCase();
+        return androidId == null ? null : androidId.toUpperCase();
     }
 
     public static String getPhoneNo(Context context) {
