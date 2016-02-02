@@ -64,6 +64,9 @@ public class DataSender {
 
     private Application mContext;
 
+    private double mLongitude;
+    private double mLatitude;
+
     /**
      * 初始化DataSender
      */
@@ -248,12 +251,18 @@ public class DataSender {
         if (null == mGeolocation) {
             mGeolocation = LocationFactory.creator(LocationFactory.TYPE_GOOGLE_GEO, mContext);
         }
+        if(0 != mLatitude && 0 != mLongitude) {
+            mParams.put("lx", mLongitude);
+            mParams.put("ly", mLatitude);
+        }
 
         mGeolocation.getLocationOnce(new GeoLocationListener() {
             @Override
             public void onReceivedLocation(Object locationData) {
                 Location location = (Location) locationData;
                 if (null != location) {
+                    mLongitude = location.getLongitude();
+                    mLatitude = location.getLatitude();
                     mParams.put("lx", location.getLatitude());
                     mParams.put("ly", location.getLongitude());
                 }
