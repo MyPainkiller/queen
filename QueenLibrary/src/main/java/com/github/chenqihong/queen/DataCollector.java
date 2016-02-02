@@ -73,26 +73,29 @@ public class DataCollector {
 
 	/**
 	 * CheckBox点击动作收集（暂不使用）
-	 * @param checkBoxId
-	 * @param check
-	 * @param array
-	 * @return
+	 * @param target CheckBox标志
+	 * @param title CheckBox字面标题
+	 * @param tag	CheckBox携带的tag
+	 * @param activityName CheckBox所在的activity
+	 * @param array 待插入的json列表
+	 * @return 插好的json列表
 	 */
-	public JSONArray checkBoxCheckDataCollect(String checkBoxId, boolean check, JSONArray array) {
-		JSONObject object = CheckBoxUtil.checkBoxInfoGenerated(checkBoxId, check);
+	public JSONArray checkBoxCheckDataCollect(String target, String title, String tag, String activityName, JSONArray array) {
+		JSONObject object = CheckBoxUtil.checkBoxClickInfoGeneration(target, title, tag, activityName);
 		return InsertJSONObject(object, array);
 	}
 
 	/**
 	 * TextView动作收集（暂不使用）
-	 * @param textViewName textView标志
-	 * @param textViewContent	TextView字面内容
-	 * @param operationType	textView动作
-	 * @param array	待插入Json列表
-	 * @return 插好的Json列表
+	 * @param target TextView标志
+	 * @param title TextView字面标题
+	 * @param tag	TextView携带的tag
+	 * @param activityName TextView所在的activity
+	 * @param array 待插入的json列表
+	 * @return 插好的json列表
 	 */
-	public JSONArray textViewInfoDataCollect(String textViewName, String textViewContent, int operationType, JSONArray array){
-		JSONObject object = TextViewUtil.textViewInfoGenerated(textViewName, textViewContent, operationType);
+	public JSONArray textViewInfoDataCollect(String target, String title, String tag, String activityName, JSONArray array){
+		JSONObject object = TextViewUtil.textViewInfoGenerated(target, title, tag, activityName);
 		return InsertJSONObject(object, array);
 	}
 

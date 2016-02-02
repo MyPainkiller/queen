@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.HttpCookie;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
@@ -84,6 +87,8 @@ public class Queen {
 	private boolean isCrashHandlerStarted = false;
 
 	private boolean isUrlOptionSet = false;
+
+	private ArrayList<View> mAvoidListView;
 
 	/**
 	 * Beacon必须为单例，一个应用只存在一个实例。
@@ -224,25 +229,25 @@ public class Queen {
 
 	/**
 	 * 收集checkbox内容
-	 * @param checkBoxId checkbox的标志
-	 * @param check 是否check
+	 * @param id checkbox的标志
+	 * @param tag 是否check
 	 */
-	public void checkBoxCheckDataCollect(String checkBoxId, boolean check) {
+	public void checkBoxCheckDataCollect(String id, String title, String tag, Context context) {
 		synchronized(LOCK){
-			mArray = mCollector.checkBoxCheckDataCollect(checkBoxId, check, mArray);
+			mArray = mCollector.checkBoxCheckDataCollect(id, title, tag, context.toString(), mArray);
 			bufferFullSend();
 		}
 	}
 
 	/**
 	 * 收集TextView的内容
-	 * @param textViewName textView的标志
-	 * @param textViewContent textView字面内容
-	 * @param operationType	该textView可进行的操作
+	 * @param id textView的标志
+	 * @param title textView字面内容
+	 * @param tag	该textView可进行的操作
 	 */
-	public void textViewInfoDataCollect(String textViewName, String textViewContent, int operationType){
+	public void textViewInfoDataCollect(String id, String title, String tag, Context context){
 		synchronized(LOCK){
-			mArray = mCollector.textViewInfoDataCollect(textViewName, textViewContent, operationType, mArray);
+			mArray = mCollector.textViewInfoDataCollect(id, title, tag, context.toString(), mArray);
 			bufferFullSend();
 		}
 	}
@@ -330,16 +335,15 @@ public class Queen {
 		switch(ev.getAction()){
     	case MotionEvent.ACTION_DOWN:{
     		try{
-    			mViewStack = new Stack<View>();
+    			mViewStack = new Stack<>();
     			final float pressX = ev.getRawX();
     			final float pressY = ev.getRawY();
     			findViewAtPosition(myView, (int)pressX, (int)pressY);
     			if(mViewStack.isEmpty()){
     				return;
     			}
-    			mInitialView = mViewStack.pop();
-    			
-    			mInitialView = ignoreView(mInitialView);
+
+    			mInitialView = ignoreView();
     		}catch(Exception e){
 				Log.e(TAG, "recognizeViewEvent: unknown error");
     		}
@@ -354,29 +358,23 @@ public class Queen {
     			if(mViewStack.isEmpty()){
     				return;
     			}
-    			View view = mViewStack.pop();
-				view = ignoreView(view);
-    			
-    			if(!isAvoidLeftSideView(view.toString()) && mViewStack.isEmpty()){
-    				return;
-    			}
-    			
-    			if(view != mInitialView){
+    			View view = ignoreView();
+    			if(null == view){
     				return;
     			}
     			try{
-    				if(view instanceof Button){
+					if(view instanceof CheckBox){
+						CheckBox checkBox = (CheckBox)view;
+						buttonPressDataCollect(checkBox.toString(), checkBox.isChecked() + "", (String) (checkBox.getTag()), context);
+					}else if(view instanceof Button){
     					Button button = (Button)view;
-    					buttonPressDataCollect(button.toString(), button.getText().toString(), (String)(button.getTag()), context);
+    					buttonPressDataCollect(button.toString(), button.getText().toString(), (String) (button.getTag()), context);
     				}else if(view instanceof ImageView){
     					ImageView imageView = (ImageView)view;
     					imageViewPressDataCollect(imageView.toString(), null, null, context);
     				}else if(view instanceof TextView){
-    					if(view instanceof EditText){
-    						return;
-    					}
-    					//TextView text = (TextView)view;
-						//TextView暂不做收集
+    					TextView text = (TextView)view;
+						textViewInfoDataCollect(text.toString(), text.getText().toString(), (String) (text.getTag()), context);
     				}else{
     					buttonPressDataCollect(view.toString(), null, null, context);
     				}
@@ -386,6 +384,40 @@ public class Queen {
     		}
     		break;
     	}
+	}
+
+	public void addAvoidView(View view){
+		if(null == view || null == mAvoidListView){
+			return;
+		}
+
+		mAvoidListView.add(view);
+	}
+
+	/**
+	 * 忽略View，不搜集该View上的动作
+	 * @return
+	 */
+	private View ignoreView(){
+		View view = mViewStack.pop();
+		while(isAvoidView(view) && !mViewStack.isEmpty()){
+			view = mViewStack.pop();
+		}
+		if(isAvoidView(view)){
+			return null;
+		}
+		return view;
+	}
+
+	private boolean isAvoidView(View view){
+		Iterator<View> i = mAvoidListView.iterator();
+		while (i.hasNext()){
+			View avoidView = i.next();
+			if(view == avoidView){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -426,51 +458,6 @@ public class Queen {
     }
 
 	/**
-	 * 忽略View，不搜集该View上的动作
-	 * @param view
-	 * @return
-	 */
-    private View ignoreView(View view){
-    	boolean isListView = false;
-		while(!isAvoidListView(view.toString()) && !mViewStack.isEmpty()){
-			view = mViewStack.pop();
-			isListView = true;
-		}
-		
-		if(!isListView){
-			while(!isAvoidLeftSideView(view.toString()) && !mViewStack.isEmpty()){
-				view = mViewStack.pop();
-			}
-		}
-		
-		return view;
-    }
-
-	/**
-	 * 适配好期贷，手触摸listView动作搜集
-	 * @param viewName
-	 * @return
-	 */
-    private boolean isAvoidListView(String viewName){
-    	if(viewName.contains("ListView")){
-    		return false;
-    	}
-    	return true;
-    }
-
-	/**
-	 * 适配好期贷，手触摸菜单栏动作搜集
-	 * @param viewName
-	 * @return
-	 */
-    private boolean isAvoidLeftSideView(String viewName){
-    	if(viewName.contains("slide_left")){
-    		return false;
-    	}
-    	return true;
-    }
-
-	/**
 	 * Json列表满10条随即发送
 	 */
 	private void bufferFullSend(){
@@ -487,6 +474,7 @@ public class Queen {
 		mCollector = new DataCollector();
 		mArray = new JSONArray();
 		mViewStack = new Stack<View>();
+		mAvoidListView = new ArrayList<>();
 	}
 
 }
