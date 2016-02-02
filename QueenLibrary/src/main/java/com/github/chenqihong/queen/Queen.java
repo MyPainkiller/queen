@@ -21,6 +21,8 @@ import com.github.chenqihong.queen.ActivityInfoCollector.PageCollector;
 import com.github.chenqihong.queen.Base.RSAUtils;
 import com.github.chenqihong.queen.CrashCollector.CrashHandler;
 import com.github.chenqihong.queen.Exception.NoUrlException;
+import com.github.chenqihong.queen.Watcher.IQueenWatcher;
+import com.github.chenqihong.queen.Watcher.Observed;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -89,6 +91,8 @@ public class Queen {
 	private boolean isUrlOptionSet = false;
 
 	private ArrayList<View> mAvoidListView;
+
+	private Observed mObserved;
 
 	/**
 	 * Beacon必须为单例，一个应用只存在一个实例。
@@ -325,6 +329,14 @@ public class Queen {
 		});
 	}
 
+	public void registerObserver(IQueenWatcher watcher){
+		mObserved.registerObserver(watcher);
+	}
+
+	public void unregisterObserver(IQueenWatcher watcher){
+		mObserved.unregisterObserver(watcher);
+	}
+
 	/**
 	 * 识别在View上所进行的动作
 	 * @param ev 动作
@@ -463,6 +475,7 @@ public class Queen {
 	private void bufferFullSend(){
 		if(10 <= mArray.length()){
 			sendData();
+			mObserved.notifyDataChanged("User Experience Log :" + mArray.toString());
 			mArray = new JSONArray();
 		}
 	}
@@ -475,6 +488,7 @@ public class Queen {
 		mArray = new JSONArray();
 		mViewStack = new Stack<View>();
 		mAvoidListView = new ArrayList<>();
+		mObserved = new Observed();
 	}
 
 }
