@@ -21,6 +21,7 @@ import com.github.chenqihong.queen.ActivityInfoCollector.PageCollector;
 import com.github.chenqihong.queen.Base.RSAUtils;
 import com.github.chenqihong.queen.CrashCollector.CrashHandler;
 import com.github.chenqihong.queen.Exception.NoUrlException;
+import com.github.chenqihong.queen.Exception.UnInitException;
 import com.github.chenqihong.queen.Watcher.IQueenWatcher;
 import com.github.chenqihong.queen.Watcher.Observed;
 
@@ -34,69 +35,99 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * Beacon对外接口
+ * Queen对外接口
+ * Encapsulated interface of Queen
  */
 public class Queen {
+
 	public static final String TAG = "Queen";
+
 	/**
 	 * 并发条件下的锁。
+	 * LOCK for sync
 	 */
-	private String LOCK = "lock";
+	private final String LOCK = "lock";
 
 	/**
 	 * 行为JSON列表。
+	 * List of JSON used for user behaviors
 	 */
 	private JSONArray mArray;
 
 	/**
-	 * Beacon单例。
+	 * Queen单例。
+	 * Instance of Queen
 	 */
 	private static Queen sInstance;
 
 	/**
 	 * 前一个加载的页面，用来判断本次加载页面是否同前一次一样，避免重复收集。
+	 * previous loaded activity stored to avoid to collect again
 	 */
 	private String mPrePageName;
 
 	/**
 	 * 数据发送接口。
+	 * Object to send collected data.
 	 */
 	private DataSender mSender;
 
 	/**
 	 * 数据收集接口。
+	 * Object to collect data.
 	 */
 	private DataCollector mCollector;
 
 	/**
 	 * 获取该页面View的层次栈。
+	 * Stack used to store view
 	 */
 	private Stack<View> mViewStack;
 
 	/**
 	 * 初始页面。
+	 * Collected view at initial time
 	 */
 	private View mInitialView;
 
 	/**
 	 * 判断Crash是否已经被发送，同一个Crash只可被发送一次。
+	 * Boolean value used to ensure one crash one sending.
 	 */
 	private boolean isCrashHandlerSent = false;
 
 	/**
-	 * 判断CrashHandler是否以及初始化，避免重复初始化。
+	 * 判断CrashHandler是否已经初始化，避免重复初始化。
+	 * Boolean value used to ensure CrashHandler has been initiated.
 	 */
 	private boolean isCrashHandlerStarted = false;
 
+	/**
+	 * 判断Url是否已经设值；
+	 * Boolean value used to check whether the URL has been set;
+	 */
 	private boolean isUrlOptionSet = false;
 
+	/**
+	 * 判断Queen是否初始化
+	 * Boolean value used to check whether Queen is initialized;
+	 */
+	private boolean isInited = false;
+
+	/**
+	 * 用于储存要规避的View；
+	 */
 	private ArrayList<View> mAvoidListView;
 
+	/**
+	 * 用于外部获取Queen状态的观察者
+	 * Observer applied to
+	 */
 	private Observed mObserved;
 
 	/**
-	 * Beacon必须为单例，一个应用只存在一个实例。
-	 * @return Beacon实例
+	 * Queen必须为单例，一个应用只存在一个实例。
+	 * @return Queen实例
 	 */
 	public static Queen getInstance(){
 		if(sInstance == null){
@@ -106,26 +137,72 @@ public class Queen {
 	}
 
 	/**
-	 * Beacon初始化
-	 * @param sessionDomain cookie的域名
-	 * @param application 布局内容
+	 * Queen初始化
+	 *
+	 * Initializaton of Queen
+	 *
+	 * sessionDomain 可选, 用于同后台数据进行匹配来确认用户请求了哪些数据。
+	 * 注意：如果Queen没有成功初始化将影响到下列模块工作：
+	 * 1. 后台数据采集
+	 * 2. cookie数据采集
+	 * 3. 数据发送
+	 *
+	 * sessionDomain is optional. it is applied to check which requests are required by users.
+	 * Note that if Queen is not initialized successfully, modules below may not work normally.
+	 * 1. back server data collection;
+	 * 2. cookie collection;
+	 * 3. data sending.
+	 *
+	 * @param sessionDomain cookie的域名 session domain of cookie
+	 * @param application 布局内容 context of application
 	 */
 	public void init(String sessionDomain, Application application){
-		backgroundDataCollect(application);
-		setDomain(sessionDomain);
-		initUncaughtErrorMonitor(application);
-		mSender = new DataSender(application);
-	}
+		try {
+			if (null == application) {
+				throw new UnInitException();
+			}
 
-	public void setUrl(@NonNull String url){
-		if(null == url && "".equals(url)){
-			return;
+			backgroundDataCollect(application);
+			setDomain(sessionDomain);
+			initUncaughtErrorMonitor(application);
+			mSender = new DataSender(application);
+			isInited = true;
+		}catch (UnInitException e){
+			Log.w(TAG, "Queen is not initialized", e);
 		}
-
-		mSender.setUrl(url);
-		isUrlOptionSet = true;
 	}
 
+	/**
+	 * 设置Url，注意：如果没有提供明确的url，Queen将不发送收集的数据
+	 *
+	 * Set URL. Note that if URL was not set, Queen would never send collected data.
+	 *
+	 * @param url
+	 */
+	public void setUrl(@NonNull String url){
+		try {
+			if (!isInited || null == mSender) {
+				throw new UnInitException();
+			}
+			if (null == url) {
+				return;
+			}
+
+			mSender.setUrl(url);
+			isUrlOptionSet = true;
+		}catch (UnInitException e){
+			Log.e(TAG, "Queen is not initialized");
+		}
+	}
+
+	/**
+	 * 设置RSA的public key， 注意：如果没有提供明确的public key，Queen将以明文方式发送数据
+	 *
+	 * Set Public key of RSA.Note that if public key is not available,
+	 * Queen would send original data without encrypted
+	 *
+	 * @param publicKey
+	 */
 	public void setRSAPublicKey(@NonNull String publicKey){
 		if(null == publicKey && "".equals(publicKey)){
 			return;
@@ -136,46 +213,78 @@ public class Queen {
 
 	/**
 	 * 发送数据
+	 * send data;
 	 */
-	@TargetApi(Build.VERSION_CODES.KITKAT)
 	public void sendData(){
-		try{
-			if(isUrlOptionSet) {
+		try {
+			if (!isInited || null == mSender) {
+				throw new UnInitException();
+			}
+			if (isUrlOptionSet) {
 				mSender.sendData(mArray);
-			}else{
+			} else {
 				throw new NoUrlException("No URL Expected");
 			}
+
+		}catch (UnInitException e){
+			Log.e(TAG, "Queen is not initialized");
 		}catch(Exception e){
 			Log.e(TAG, "sendData", e);
 		}
 	}
 
 	/**
-	 * 设置session Id
+	 * 设置session Id 用于获取APP接收到的cookie来匹配后台数据
+	 *
+	 * Set session id, used to collect cookie requested by APP.
 	 */
 	public void setSessionId(List<HttpCookie> receivedCookies){
-		if(null != mSender){
+		try {
+			if (!isInited || null == mSender) {
+				throw new UnInitException();
+			}
 			mSender.setSessionId(receivedCookies);
+
+		}catch (UnInitException e) {
+			Log.e(TAG, "Queen is not initialized");
 		}
 	}
 
 	/**
-	 * 获取cookie域名
+	 * 获取cookie域名, 用于从cookie中过滤出你需要的cookie
+	 *
+	 * set Cookie's domain to filter cookie that you need
 	 * @param domain 域名
 	 */
 	public void setDomain(String domain){
-		if(null != mSender){
+		try {
+			if (!isInited || null == mSender) {
+				throw new UnInitException();
+			}
+
 			mSender.setDomain(domain);
+
+		}catch (UnInitException e) {
+			Log.e(TAG, "Queen is not initialized");
 		}
 	}
 
 	/**
-	 * 获取userId
+	 * 获取userId，用于识别该APP用户
+	 * get UserId, used to recognize user
+	 *
 	 * @param userId
 	 */
 	public void setUserId(String userId){
-		if(null != userId && null != mSender){
-			mSender.setUserId(userId);
+		try {
+			if (!isInited || null == mSender) {
+				throw new UnInitException();
+			}
+			if(null != userId){
+				mSender.setUserId(userId);
+			}
+		}catch (UnInitException e) {
+			Log.e(TAG, "Queen is not initialized");
 		}
 	}
 
@@ -481,7 +590,7 @@ public class Queen {
 	}
 
 	/**
-	 * Beacon类初始化
+	 * Queen类初始化
 	 */
 	private Queen(){
 		mCollector = new DataCollector();
