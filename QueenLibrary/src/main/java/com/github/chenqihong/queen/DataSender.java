@@ -325,7 +325,8 @@ public class DataSender {
     };
 
     /**
-     * 数据发送返回处理（暂不做处理）
+     * 数据发送返回处理
+     * Returned data
      */
     private Handler mHandler = new Handler(new Handler.Callback() {
 
@@ -344,6 +345,11 @@ public class DataSender {
         try {
             JSONObject object = new JSONObject(data);
             String resultCode = object.getString("errcode");
+
+            /**
+             * 成功返回的标志为0;
+             * Here I define 0 as the success symbol;
+             */
             if ("0".equals(resultCode)) {
                 responseSuccess();
             } else {
@@ -357,11 +363,13 @@ public class DataSender {
 
     private void responseSuccess() {
         //数据发送成功不做任何处理；
+        //Not used in silence;
 
     }
 
     private void responseFailed(String resultCode) {
         //数据发送失败不做任何处理；
+        //Not used in silence;
     }
 
 }

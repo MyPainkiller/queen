@@ -22,6 +22,7 @@ import java.io.IOException;
 
 /**
  * 行为数据捕捉接口
+ * Data Collection Instance;
  *
  */
 public class DataCollector {
@@ -31,9 +32,11 @@ public class DataCollector {
 
 	/**
 	 * Json列表插入
-	 * @param object Json元素
-	 * @param array Json列表
-	 * @return 返回插好的Json列表
+	 * Json Insertion
+	 *
+	 * @param object Json元素 Json Object;
+	 * @param array Json列表 Json Array;
+	 * @return 返回插好的Json列表 Inserted Json Array;
 	 */
     private JSONArray InsertJSONObject(JSONObject object, JSONArray array){
     	if(null != object){
@@ -45,12 +48,14 @@ public class DataCollector {
 
 	/**
 	 * button点击行为收集
-	 * @param target button标志
-	 * @param title button字面标题
-	 * @param tag	button携带的tag
-	 * @param activityName button所在的activity
-	 * @param array 待插入的json列表
-	 * @return 插好的json列表
+	 * button clicked data
+	 *
+	 * @param target button标志 the button mark;
+	 * @param title button字面标题 info in the button;
+	 * @param tag	button携带的tag the tag brought;
+	 * @param activityName  button 所在activity activity which the button in;
+	 * @param array 待插入的json列表 Json Array;
+	 * @return 插好的json列表 Finished Json Array;
 	 */
 	public JSONArray buttonPressDataCollect(String target, String title, String tag, String activityName, JSONArray array) {
 		JSONObject object = ButtonUtil.buttonInfoGenerated(target, title, tag, activityName);
@@ -72,7 +77,7 @@ public class DataCollector {
 	}
 
 	/**
-	 * CheckBox点击动作收集（暂不使用）
+	 * CheckBox点击动作收集
 	 * @param target CheckBox标志
 	 * @param title CheckBox字面标题
 	 * @param tag	CheckBox携带的tag
@@ -86,13 +91,15 @@ public class DataCollector {
 	}
 
 	/**
-	 * TextView动作收集（暂不使用）
-	 * @param target TextView标志
-	 * @param title TextView字面标题
-	 * @param tag	TextView携带的tag
-	 * @param activityName TextView所在的activity
-	 * @param array 待插入的json列表
-	 * @return 插好的json列表
+	 * TextView动作收集
+	 * TextView clicked data
+	 *
+	 * @param target TextView标志; mark;
+	 * @param title TextView字面标题; title;
+	 * @param tag	TextView携带的tag; tag;
+	 * @param activityName TextView所在的activity; activity
+	 * @param array 待插入的json列表; Json Array;
+	 * @return 插好的json列表; Finished Json Array
 	 */
 	public JSONArray textViewInfoDataCollect(String target, String title, String tag, String activityName, JSONArray array){
 		JSONObject object = TextViewUtil.textViewInfoGenerated(target, title, tag, activityName);
@@ -101,6 +108,8 @@ public class DataCollector {
 
 	/**
 	 * activity打开状态收集
+	 * activity open data
+	 *
 	 * @param array 待插入的Json列表
 	 * @param activityName	activity标志
 	 * @param activityTitle activity标题

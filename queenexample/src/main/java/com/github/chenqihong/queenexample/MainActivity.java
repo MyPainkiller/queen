@@ -9,6 +9,10 @@ import android.widget.TextView;
 import com.github.chenqihong.queen.Queen;
 import com.github.chenqihong.queen.Watcher.IQueenWatcher;
 
+/**
+ * Define an example to run Queen. Please note that if you want to make this example work,
+ * you should define url of your server to collect data.
+ */
 public class MainActivity extends Activity {
 
     private Button mLogButton;
@@ -26,10 +30,26 @@ public class MainActivity extends Activity {
     private void initView(){
         mLogButton = (Button)findViewById(R.id.main_log_button);
         mMessageView = (TextView)findViewById(R.id.main_message_view);
+
+        /**
+         * Get Queen's instance.
+         */
         mQueen = Queen.getInstance();
-        mQueen.init("www.baidu.com", getApplication());
-        mQueen.setUrl("www.baidu.com");
+
+        /**
+         * Queen's initiation.
+         */
+        mQueen.init("type your server's domain", getApplication());
+
+        /**
+         * Set url to make Queen run on the phone.
+         */
+        mQueen.setUrl("type your server's url");
         mStringBuilder = new StringBuilder();
+
+        /**
+         * Watcher to watch the data gained by queen.
+         */
         mWatcher = new IQueenWatcher() {
             @Override
             public void update(String str) {
@@ -38,19 +58,26 @@ public class MainActivity extends Activity {
             }
         };
         mQueen.registerObserver(mWatcher);
-        mQueen.activityDataCollect(this.toString(), null, null, true, this);
 
     }
 
     @Override
     public void onResume(){
         super.onResume();
+
+        /**
+         * collect activity's status, when it is open.
+         */
         mQueen.getInstance().activityDataCollect(this.toString(), null, null, true, this);
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
+
+        /**
+         * collect activity's status, when it is closed.
+         */
         mQueen.activityDataCollect(this.toString(), null, null, false, this);
         mQueen.appExitSend(this);
         mQueen.unregisterObserver(mWatcher);
@@ -58,6 +85,10 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        /**
+         * collect view interaction data, i.e. button clicked.
+         */
         mQueen.getInstance()
                 .recognizeViewEvent(ev, this.getWindow()
                         .getDecorView(), this);
