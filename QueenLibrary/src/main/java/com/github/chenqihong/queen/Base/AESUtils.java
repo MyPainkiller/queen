@@ -4,9 +4,17 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * AES加密工具
+ * AES encryption tools
+ */
 public class AESUtils {
 	
 	private static SecretKeySpec mSecretSpec = null;
+
+	/**
+	 * RSA加密后的密钥
+	 */
 	private static byte[] mEncodedRawKey = null;
 	
 	public static byte[] encrypt(byte[] rawkey, byte[] data) throws Exception{
@@ -14,6 +22,10 @@ public class AESUtils {
 		cipher.init(Cipher.ENCRYPT_MODE, mSecretSpec);
 		byte[] encrypted = cipher.doFinal(data);
 		if(null == mEncodedRawKey){
+
+			/**
+			 * 密钥进行RSA加密
+			 */
 			mEncodedRawKey = RSAUtils.encodeData(rawkey);
 		}
 

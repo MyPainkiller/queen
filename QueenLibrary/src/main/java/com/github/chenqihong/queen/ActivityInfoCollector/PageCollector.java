@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 /**
  * activity页面行为收集
+ * activity data obtaining
  */
 public class PageCollector {
 	private static final String TAG = "PageCollector";

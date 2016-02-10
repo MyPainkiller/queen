@@ -63,13 +63,15 @@ public class DataCollector {
 	}
 
 	/**
-	 * imageView点击动作收集
-	 * @param target	ImageView标志
-	 * @param title	ImageView标题
-	 * @param tag		ImageView携带的tag
-	 * @param activityName	ImageView所在的Activity
-	 * @param array	待插入的jsonArray
-	 * @return 插好的jsonArray
+	 * ImageView点击动作收集
+	 * ImageView clicked data
+	 *
+	 * @param target	ImageView标志; mark;
+	 * @param title	ImageView标题; title;
+	 * @param tag		ImageView携带的tag; tag;
+	 * @param activityName	ImageView所在的Activity; activity
+	 * @param array	待插入的jsonArray; Json Array;
+	 * @return 插好的jsonArray; Finished Json Array;
 	 */
 	public JSONArray imageViewPressDataCollect(String target, String title, String tag, String activityName, JSONArray array) {
 		JSONObject object = ImageViewUtil.imageViewInfoGenerated(target, title, tag, activityName);
@@ -78,12 +80,12 @@ public class DataCollector {
 
 	/**
 	 * CheckBox点击动作收集
-	 * @param target CheckBox标志
-	 * @param title CheckBox字面标题
-	 * @param tag	CheckBox携带的tag
-	 * @param activityName CheckBox所在的activity
-	 * @param array 待插入的json列表
-	 * @return 插好的json列表
+	 * @param target CheckBox标志; mark;
+	 * @param title CheckBox字面标题; title;
+	 * @param tag	CheckBox携带的tag; tag;
+	 * @param activityName CheckBox所在的activity; activity;
+	 * @param array 待插入的json列表; Json Array;
+	 * @return 插好的json列表; Finished Json Array;
 	 */
 	public JSONArray checkBoxCheckDataCollect(String target, String title, String tag, String activityName, JSONArray array) {
 		JSONObject object = CheckBoxUtil.checkBoxClickInfoGeneration(target, title, tag, activityName);
@@ -123,6 +125,8 @@ public class DataCollector {
 
 	/**
 	 * activity关闭状态收集
+	 * activity closed data
+	 *
 	 * @param array 待插入的Json列表
 	 * @param activityName
 	 * @param activityTitle
@@ -136,8 +140,10 @@ public class DataCollector {
 
 	/**
 	 * 前后台监控启动
+	 * a way to sense back or front.
+	 *
 	 * @param context
-	 * @param listener 监听器
+	 * @param listener 监听器 listener for tracing;
 	 */
 	public void backgroundDataCollect(Context context, BackgroundMonitor.OnAppStatusChangeListener listener) {
 		BackgroundMonitor monitor = BackgroundMonitor.getInstance();
@@ -147,9 +153,11 @@ public class DataCollector {
 
 	/**
 	 * 插入crash事件，搜集crash
-	 * @param object crash事件
-	 * @param array 待插入的Json列表
-	 * @return 插好的Json列表
+	 * crash event data
+	 *
+	 * @param object crash事件; Crash event;
+	 * @param array 待插入的Json列表; Json Array;
+	 * @return 插好的Json列表; Finished Json Array;
 	 */
 	public JSONArray insertCrashHandler(JSONObject object, JSONArray array){
 		return InsertJSONObject(object, array);
@@ -157,9 +165,11 @@ public class DataCollector {
 
 	/**
 	 * 退出APP事件收集
+	 * App Exited data
+	 *
  	 * @param context
-	 * @param array 待插入的Json列表
-	 * @return 插好的Json列表
+	 * @param array 待插入的Json列表; Json Array;
+	 * @return 插好的Json列表; Finished Json Array;
 	 */
 	public JSONArray appExitLogHandle(Context context, JSONArray array){
 		JSONObject object = PageCollector.getInstance().appCloseEventGeneration(context);

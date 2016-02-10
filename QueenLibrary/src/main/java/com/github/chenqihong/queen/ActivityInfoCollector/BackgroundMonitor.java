@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * 前后台监控
+ * Back or front ground monitor
  */
 public class BackgroundMonitor {
 	/**

@@ -5,7 +5,8 @@ import android.util.Log;
 import org.json.JSONObject;
 
 /**
- * checkbox动作收集（暂不收集）
+ * checkbox动作收集
+ * Encapsulate the CheckBox clicked data;
  */
 public class CheckBoxUtil {
 	private static final String TAG = "CheckBoxUtil";
@@ -54,7 +55,7 @@ public class CheckBoxUtil {
 
 			object.put("ac", "BC");
 		}catch(Exception e){
-			Log.e(TAG, "ButtonUtil:unknown error");
+			Log.e(TAG, "CheckBoxUtil:unknown error");
 		}
 
 		return object;

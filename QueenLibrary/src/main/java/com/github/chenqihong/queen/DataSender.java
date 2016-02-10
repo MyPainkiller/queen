@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.github.chenqihong.queen.Device.Device;
-import com.github.chenqihong.queen.DeviceInfoCollector.TrafficUtil;
+import com.github.chenqihong.queen.Device.TrafficUtil;
 import com.github.chenqihong.queen.Geolocation.GeoLocationListener;
 import com.github.chenqihong.queen.Geolocation.ILocation;
 import com.github.chenqihong.queen.Geolocation.LocationFactory;
@@ -24,41 +24,56 @@ import java.util.List;
 
 /**
  * 数据发送前准备接口，封装环境数据
+ * Encapsulate environmental data before sending
  */
 public class DataSender {
 
     /**
      * 后台Url
+     *
+     * Url of server;
      */
     private static String sUrl = "";
 
     /**
      * 定位组件
+     *
+     * Location instance;
      */
     private ILocation mGeolocation = null;
 
     /**
      * 环境变量封装HashMap
+     *
+     * Hash map used to encapsulate environmental data;
      */
     private HashMap<String, Object> mParams;
 
     /**
      * 行为Json列表
+     *
+     * User behavior data for json array;
      */
     private JSONArray mActionArray;
 
     /**
      * cookie域名
+     *
+     * Domain of cookie;
      */
     private String mDomain;
 
     /**
      * cookie的session id
+     *
+     * session id of cookie;
      */
     private String mSessionId;
 
     /**
      * APP的user id（登录名）
+     *
+     * user id of APP;
      */
     private String mUserId;
 
@@ -69,6 +84,8 @@ public class DataSender {
 
     /**
      * 初始化DataSender
+     *
+     * Initiation of DataSender;
      */
     public DataSender(Application application) {
         mParams = new HashMap<String, Object>();
@@ -161,8 +178,8 @@ public class DataSender {
         String os = Device.getInstance(mContext).getOsType();
         String resolutionWidth = Device.getInstance(mContext).getScreenWidth() + "";
         String resolutionHeight = Device.getInstance(mContext).getScreenHeight() + "";
-        long txBytes = TrafficUtil.txBytesInfoGenerate();
-        long rxBytes = TrafficUtil.rxBytesInfoGenerate();
+        long txBytes = Device.getInstance(mContext).getTxTraffic();
+        long rxBytes = Device.getInstance(mContext).getRxTraffic();
 
         if (null != uuid && 0 != uuid.length()) {
             mParams.put("uu", uuid);

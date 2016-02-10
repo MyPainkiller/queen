@@ -6,11 +6,14 @@ import org.json.JSONObject;
 
 /**
  * ImageView动作封装
+ * Encapsulate the ImageView clicked data;
  */
 public class ImageViewUtil {
 	private static final String TAG = "ImageViewUtil";
 	/**
 	 * ImageView动作封装
+	 * Encapsulate;
+	 *
 	 * @param target 标识
 	 * @param title 标题
 	 * @param tag	备注

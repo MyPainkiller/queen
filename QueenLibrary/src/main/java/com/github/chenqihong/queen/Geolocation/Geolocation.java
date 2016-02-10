@@ -8,6 +8,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 /**
+ * 调用Google 定位SDK实现定位
+ * Make location instance using Google Location SDK.
+ *
  * Created by abby on 16/1/31.
  */
 public class Geolocation extends ILocation {
@@ -16,6 +19,10 @@ public class Geolocation extends ILocation {
     private Location mLocation;
     private String mProvider;
 
+    /**
+     * Initialize
+     * @param context
+     */
     public Geolocation(Context context){
         mLocationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -27,6 +34,11 @@ public class Geolocation extends ILocation {
         mProvider = mLocationManager.getBestProvider(criteria, true);
     }
 
+    /**
+     * 获取定位信息一次,之后立刻停止定位.防止过多性能消耗.
+     * Get Location once and stop at once after the data got.
+     * @param listener 获取信息变化监听
+     */
     @Override
     public void getLocationOnce(final GeoLocationListener listener){
         //noinspection ResourceType

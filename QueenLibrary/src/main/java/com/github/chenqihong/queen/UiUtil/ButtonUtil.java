@@ -6,11 +6,14 @@ import org.json.JSONObject;
 
 /**
  * Button点击动作封装
+ * Encapsulate the button clicked data;
  */
 public class ButtonUtil {
 	private static final String TAG = "ButtonUtil";
 	/**
 	 * button动作封装
+	 * Encapsulation;
+	 *
 	 * @param target 标识
 	 * @param title 标题
 	 * @param tag 备注

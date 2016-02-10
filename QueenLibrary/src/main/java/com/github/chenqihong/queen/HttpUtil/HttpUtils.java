@@ -21,7 +21,7 @@ import java.util.zip.GZIPOutputStream;
 import static com.squareup.okhttp.MediaType.parse;
 
 /**
- * HttpPost
+ * Http post method
  * @author ChenQihong
  *
  */
@@ -30,7 +30,9 @@ public class HttpUtils {
 
 	private static String TAG = "HttpUtils";
 	/**
-	 * post
+	 * post 使用post方式传递较大量的数据;
+	 * post way to send data;
+	 *
 	 * @param url 后台地址
 	 * @param params 参数封装
 	 * @param array 动作列表
@@ -49,8 +51,7 @@ public class HttpUtils {
 		}
 		paramObj.put("ca", array);
 		try{
-			//Log.e("original", "original:" + paramObj.toString());
-			byte[] finalEncodeData = null;
+			byte[] finalEncodeData;
 			if(RSAUtils.hasPublicKey()) {
 				byte[] seed = java.util.UUID.randomUUID().toString().replace("-", "").substring(0, 16).getBytes();
 				finalEncodeData = AESUtils.encrypt(seed, gzip(paramObj.toString().getBytes()));
@@ -75,7 +76,6 @@ public class HttpUtils {
 			
 
 		}catch(Exception e){
-			//此处不能使用MuLog，否则会产生循环
 			Log.e(TAG, "Error: sendPost", e);
 		}
 		
@@ -84,7 +84,9 @@ public class HttpUtils {
 	}
 
 	/**
-	 * gzip压缩
+	 * gzip压缩;
+	 * gzip way to compress data;
+	 *
 	 * @param val 原始数据
 	 * @return 压缩后的bytes数据
 	 * @throws IOException 错误

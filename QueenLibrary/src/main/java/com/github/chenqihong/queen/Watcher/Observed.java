@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 在Queen中实现被观察对象
  * Created by ChenQihong on 2016/2/2.
  */
 public class Observed implements IObserved{

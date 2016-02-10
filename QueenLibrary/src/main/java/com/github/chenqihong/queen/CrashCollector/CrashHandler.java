@@ -14,6 +14,7 @@ import java.io.StringWriter;
 
 /**
  * 崩溃信息处理
+ * Self-defined crash handler
  * Created by Chen Qihong on 15/10/20.
  */
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
@@ -24,6 +25,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     /**
      * 监听器接口
+     * listener to listen the crash data.
      */
     public interface OnUnCaughtExceptionListener{
 
@@ -36,6 +38,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     /**
      * CrashHandler初始化
+     * Initialize of crash handler.
+     *
      * @param context
      * @param onUnCaughtExceptionListener 监听器
      */
@@ -46,6 +50,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     /**
      * 初始化，获取线程默认CrashHandler，并将本handler注册为默认handler
+     * Get the default crash handler and register our handler to the default one.
      */
     public void init(){
         mDefaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -54,7 +59,11 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * 捕获未处理Exception后进行处理，并崩溃
+     * 捕获未处理Exception后进行处理，并崩溃.这里我们将主线程等待1分钟的时间以便让数据传送出去
+     * Handle the exception caught.
+     * we get the data and make the main thread to wait 1 min for data
+     * sending.
+     *
      * @param thread 线程
      * @param ex 未捕获Exception
      */
@@ -66,7 +75,10 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         	JSONObject object = new JSONObject();
         	try {
         		object.put("tm",time);
-        		object.put("ta", mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).packageName);
+        		object.put("ta", mContext
+                        .getPackageManager()
+                        .getPackageInfo(mContext.getPackageName(), 0).packageName);
+
         		object.put("ac", "AE");
         		Throwable cause = ex.getCause();
         		StringWriter writer = new StringWriter();
@@ -84,7 +96,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         	}
 
         	mListener.onException(object);
-            Thread.sleep(1000);
+            Thread.sleep(1000);//此处并不需要保证数据传送完成, 能传便传,不传便放弃.
             if(mDefaultCrashHandler != null){
             	mDefaultCrashHandler.uncaughtException(thread,ex);
             }else{

@@ -10,6 +10,9 @@ import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
 
+/**
+ * RSA加密工具
+ */
 public class RSAUtils {
 
 	/** */

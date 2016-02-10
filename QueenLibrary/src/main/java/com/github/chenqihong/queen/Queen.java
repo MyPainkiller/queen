@@ -1,10 +1,8 @@
 package com.github.chenqihong.queen;
 
-import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Rect;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -235,7 +232,6 @@ public class Queen {
 
 	/**
 	 * 设置session Id 用于获取APP接收到的cookie来匹配后台数据
-	 *
 	 * Set session id, used to collect cookie requested by APP.
 	 */
 	public void setSessionId(List<HttpCookie> receivedCookies){
@@ -251,9 +247,9 @@ public class Queen {
 	}
 
 	/**
-	 * 获取cookie域名, 用于从cookie中过滤出你需要的cookie
+	 * 获取cookie域名, 用于从cookie中过滤出你需要的cookie;
+	 * set Cookie's domain to filter cookie that you need;
 	 *
-	 * set Cookie's domain to filter cookie that you need
 	 * @param domain 域名
 	 */
 	public void setDomain(String domain){
@@ -270,8 +266,8 @@ public class Queen {
 	}
 
 	/**
-	 * 获取userId，用于识别该APP用户
-	 * get UserId, used to recognize user
+	 * 获取userId，用于识别该APP用户;
+	 * get UserId, used to recognize user;
 	 *
 	 * @param userId
 	 */
@@ -289,7 +285,9 @@ public class Queen {
 	}
 
 	/**
-	 * 启动未捕获Exception监控
+	 * 启动未捕获Exception监控;
+	 * Monitor for uncaught Exception;
+	 *
 	 * @param context
 	 */
 	public void initUncaughtErrorMonitor(final Context context){
@@ -311,7 +309,9 @@ public class Queen {
 	}
 
 	/**
-	 * app在退出前最后发送一段行为数据
+	 * app在退出前最后发送一段行为数据;
+	 * Send the last data before exit;
+	 *
 	 * @param context
 	 */
 	public void appExitSend(Context context){
@@ -327,10 +327,12 @@ public class Queen {
 	}
 
 	/**
-	 * 按钮数据收集
-	 * @param buttonId button的标志
-	 * @param title button上的字面内容
-	 * @param tag	button如果携带tag，收集tag
+	 * 用户交互数据收集
+	 * User data obtaining(Button);
+	 *
+	 * @param buttonId button的标志; button mark;
+	 * @param title button上的字面内容; button content;
+	 * @param tag	button如果携带tag，收集tag; tag brought by button;
 	 * @param context
 	 */
 	public void buttonPressDataCollect(String buttonId, String title, String tag, Context context) {
@@ -342,8 +344,9 @@ public class Queen {
 
 	/**
 	 * 收集checkbox内容
-	 * @param id checkbox的标志
-	 * @param tag 是否check
+	 * User data obtaining(CheckBox);
+	 *
+	 * @param id checkbox的标志; mark;
 	 */
 	public void checkBoxCheckDataCollect(String id, String title, String tag, Context context) {
 		synchronized(LOCK){
@@ -354,9 +357,11 @@ public class Queen {
 
 	/**
 	 * 收集TextView的内容
-	 * @param id textView的标志
-	 * @param title textView字面内容
-	 * @param tag	该textView可进行的操作
+	 * User data obtaining(TextView);
+	 *
+	 * @param id textView的标志; mark;
+	 * @param title textView字面内容; title;
+	 * @param tag	该textView tag; tag;
 	 */
 	public void textViewInfoDataCollect(String id, String title, String tag, Context context){
 		synchronized(LOCK){
@@ -367,9 +372,11 @@ public class Queen {
 
 	/**
 	 * 收集imageView的内容
-	 * @param imageId imageView的标志
-	 * @param title	imageView的标题
-	 * @param tag		imageView携带的tag
+	 * User data obtaining(ImageView);
+	 *
+	 * @param imageId imageView的标志; mark;
+	 * @param title	imageView的标题; title;
+	 * @param tag		imageView携带的tag; tag;
 	 * @param context
 	 */
 	public void imageViewPressDataCollect(String imageId, String title, String tag, Context context){
@@ -382,10 +389,12 @@ public class Queen {
 
 	/**
 	 * 收集Activity状态
-	 * @param activityName activity的标志
-	 * @param activityTitle	activity的标题
-	 * @param activityTag	 activity的备注
-	 * @param isOpen	activity的状态（打开和关闭）
+	 * Activity status obtaining
+	 *
+	 * @param activityName activity的标志;mark;
+	 * @param activityTitle	activity的标题; title;
+	 * @param activityTag	 activity的备注; tag;
+	 * @param isOpen	activity的状态（打开和关闭）; status(open or closed);
 	 * @param context
 	 */
 	public void activityDataCollect
@@ -414,7 +423,11 @@ public class Queen {
 	}
 
 	/**
-	 * 监控APP是后台还是前台运行，用于监控APP的关闭与打开
+	 * 监控APP是后台还是前台运行，用于监控APP的关闭与打开, 在用户看来,后台运行的APP同样处于关闭状态
+	 * 所以,这里如果发现APP进入后台运行,Queen将看做APP关闭.
+	 * To check whether this app is running on back ground or front ground. As user always make app
+	 * run in back ground to close this APP, Queen take this status as the close of APP.
+	 *
 	 * @param context
 	 */
 	public void backgroundDataCollect(final Context context){
@@ -438,18 +451,32 @@ public class Queen {
 		});
 	}
 
+	/**
+	 * 注册观察者
+	 * register observer;
+	 *
+	 * @param watcher 观察者
+	 */
 	public void registerObserver(IQueenWatcher watcher){
 		mObserved.registerObserver(watcher);
 	}
 
+	/**
+	 * 取消观察者
+	 * unregister observer;
+	 *
+	 * @param watcher 观察者
+	 */
 	public void unregisterObserver(IQueenWatcher watcher){
 		mObserved.unregisterObserver(watcher);
 	}
 
 	/**
 	 * 识别在View上所进行的动作
-	 * @param ev 动作
-	 * @param myView 执行动作的View
+	 * Get the operation on the view.
+	 *
+	 * @param ev 动作; Operation;
+	 * @param myView 执行动作的View; View on the screen;
 	 * @param context
 	 */
 	public void recognizeViewEvent(MotionEvent ev, View myView, Context context){
@@ -517,6 +544,7 @@ public class Queen {
 
 	/**
 	 * 忽略View，不搜集该View上的动作
+	 * Ignore the view which is inserted in the avoided view list.
 	 * @return
 	 */
 	private View ignoreView(){
@@ -530,6 +558,13 @@ public class Queen {
 		return view;
 	}
 
+	/**
+	 * 判断View是否在avoid View list上
+	 * Check whether the view is in the avoided view list;
+	 *
+	 * @param view
+	 * @return
+	 */
 	private boolean isAvoidView(View view){
 		Iterator<View> i = mAvoidListView.iterator();
 		while (i.hasNext()){
@@ -543,6 +578,8 @@ public class Queen {
 
 	/**
 	 * 通过用户动作的范围查找相应的View
+	 * find view that the user interacts.
+	 *
 	 * @param parent 最上层View
 	 * @param x 动作触摸点x坐标
 	 * @param y 动作触摸点y坐标
@@ -580,6 +617,7 @@ public class Queen {
 
 	/**
 	 * Json列表满10条随即发送
+	 * check whether the json array is full(10 pic)
 	 */
 	private void bufferFullSend(){
 		if(10 <= mArray.length()){
@@ -591,6 +629,7 @@ public class Queen {
 
 	/**
 	 * Queen类初始化
+	 * Initiation of Queen;
 	 */
 	private Queen(){
 		mCollector = new DataCollector();

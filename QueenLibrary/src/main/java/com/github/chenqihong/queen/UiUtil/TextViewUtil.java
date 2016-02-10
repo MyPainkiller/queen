@@ -4,8 +4,23 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+/**
+ * TextView点击动作搜集
+ * Encapsulate the TextView clicked data;
+ */
 public class TextViewUtil {
 	private final static String TAG = "TextViewUtil";
+
+	/**
+	 * TextView点击动作收集
+	 * Encapsulation
+	 *
+	 * @param target 标志
+	 * @param title	标题
+	 * @param tag	标记
+	 * @param activityName	activity名字
+	 * @return
+	 */
 	public static JSONObject textViewInfoGenerated(String target, String title, String tag, String activityName){
 		long time = System.currentTimeMillis();
 		JSONObject object = null;
