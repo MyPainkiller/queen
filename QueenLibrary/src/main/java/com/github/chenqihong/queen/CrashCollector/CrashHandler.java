@@ -13,8 +13,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * 崩溃信息处理
- * Self-defined crash handler
+ * 崩溃信息处理;
+ * Self-defined crash handler.
+ *
  * Created by Chen Qihong on 15/10/20.
  */
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
