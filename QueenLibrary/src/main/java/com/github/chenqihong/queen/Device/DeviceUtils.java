@@ -408,6 +408,9 @@ public class DeviceUtils {
      * @return
      */
     public static boolean isEmulator(Context context) {
+        if (!checkPermission(context, Manifest.permission.READ_PHONE_STATE)) {
+            return false;
+        }
 
         if (Build.MODEL.equals("sdk") || Build.MODEL.equals("google_sdk")) {
             return true;

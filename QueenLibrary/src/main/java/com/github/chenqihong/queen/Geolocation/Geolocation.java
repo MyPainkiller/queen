@@ -64,6 +64,8 @@ public class Geolocation extends ILocation {
 
             }
         };
-        mLocationManager.requestLocationUpdates(mProvider, 3000, 10, mListener);
+        if(null != mProvider) {
+            mLocationManager.requestLocationUpdates(mProvider, 3000, 10, mListener);
+        }
     }
 }
