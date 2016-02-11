@@ -93,10 +93,10 @@ public class DataSender {
     }
 
     /**
-     * 设置sessionId，之后的数据发送前均使用该id
+     * 设置TdId，之后的数据发送前均使用该id
      *
      */
-    public void setSessionId(List<HttpCookie> receivedCookies) {
+    public void setTdId(List<HttpCookie> receivedCookies) {
         List<HttpCookie> cookies = receivedCookies;
         for (int i = 0; i < cookies.size(); i++) {
             if (mDomain.contains(cookies.get(i).getDomain())) {

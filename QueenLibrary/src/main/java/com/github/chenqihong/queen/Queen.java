@@ -231,15 +231,15 @@ public class Queen {
 	}
 
 	/**
-	 * 设置session Id 用于获取APP接收到的cookie来匹配后台数据
-	 * Set session id, used to collect cookie requested by APP.
+	 * 设置Td Id 用于获取APP接收到的cookie来匹配后台数据
+	 * Set Td id, used to collect cookie requested by APP.
 	 */
-	public void setSessionId(List<HttpCookie> receivedCookies){
+	public void setTdId(List<HttpCookie> receivedCookies){
 		try {
 			if (!isInited || null == mSender) {
 				throw new UnInitException();
 			}
-			mSender.setSessionId(receivedCookies);
+			mSender.setTdId(receivedCookies);
 
 		}catch (UnInitException e) {
 			Log.e(TAG, "Queen is not initialized");

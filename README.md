@@ -49,7 +49,7 @@ If you want to watch the data or status from Queen, you can register watcher usi
 
 To use sercurity feature of Queen, you should set RSA Public Key with setRSAPublicKey(String), so that Queen can encrypt raw data with it.
 
-setSessionId(List<HttpCookie>) allows you to get cookie from your APP's traffic so that you can match Queen's data with your business data.
+setTdId(List<HttpCookie>) allows you to get cookie from your APP's traffic so that you can match Queen's data with your business data.
 
 
 setDomain(String) can filter cookie based on the single domain.

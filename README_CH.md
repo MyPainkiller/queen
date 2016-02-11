@@ -70,6 +70,6 @@ setRSAPublicKey(String)；
 session id来为用户与业务分析提供机会。使用该特性，请确保业务服务器的Domain已经正确设置，如果没有，可通过setDomain(String)方法进行修改，并将以下方法放置在cookie保存
 方法中：
 
-setSessionId(List);
+setTdId(List);
 
 处于安全或者用户隐私考虑，某些UI或者界面不希望被收集，可通过addAvoidView(View)来添加不希望被收集的view。
