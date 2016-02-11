@@ -1,3 +1,4 @@
+[中文](queen/README.md)
 1.Introduction
 
 Queen is a novel approach to sense user's interaction with your APP. In this module, user's interaction data is obtained as soon as the screen is clicked or slided. Besides, to better understand the situation that the user using APP, this module collect environmental data based on the device. To protect user's private data and give no effect to user when using APP, this module send the user's data quietly as well as safely with AES and RSA Encryption.
