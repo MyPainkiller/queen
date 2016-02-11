@@ -1,4 +1,4 @@
-[中文](queen/README.md)
+[中文](https://github.com/chenqihong3/queen/blob/master/README_CH.md)
 
 1.Introduction
 
