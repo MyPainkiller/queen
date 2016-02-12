@@ -2,7 +2,7 @@
 
 1.Introduction
 
-Queen is a novel approach to sense user's interaction with your APP. In this module, user's interaction data is obtained as soon as the screen is clicked or slided. Besides, to better understand the situation that the user using APP, this module collect environmental data based on the device. To protect user's private data and give no effect to user when using APP, this module send the user's data quietly as well as safely with AES and RSA Encryption.
+Queen is a novel approach to sense user's interaction with your APP. In this module, user's interaction data is obtained as soon as the screen is clicked or slided. Besides, to better understand the situation that the user using APP, this module collects environmental data based on the device. To protect user's private data and give no effect to user when using APP, this module sends the user's data quietly as well as safely with AES and RSA Encryption.
 
 With Queen, you can obtain important data to improve user's experience and keep your APP safe.
 
@@ -47,7 +47,7 @@ If you want to watch the data or status from Queen, you can register watcher usi
 
 2.8. Others
 
-To use sercurity feature of Queen, you should set RSA Public Key with setRSAPublicKey(String), so that Queen can encrypt raw data with it.
+To use security feature of Queen, you should set RSA Public Key with setRSAPublicKey(String), so that Queen can encrypt raw data with it.
 
 setTdId(List<HttpCookie>) allows you to get cookie from your APP's traffic so that you can match Queen's data with your business data.
 
